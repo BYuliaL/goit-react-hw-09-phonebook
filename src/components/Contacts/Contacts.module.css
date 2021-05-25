@@ -1,0 +1,16 @@
+.contactsList {
+  font-size: 20px;
+  line-height: 15px;
+  color: #fff;
+}
+
+.contactsList__button {
+  text-decoration: none;
+  margin: 5px 10px;
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  padding: 8px 16px;
+  font-size: 16px;
+}

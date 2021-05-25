@@ -1,0 +1,20 @@
+.form__button {
+  margin-top: 25px;
+  text-decoration: none;
+  line-height: 30px;
+  font-size: 30px;
+  margin: 5px 10px;
+
+  appearance: none;
+  border: 0;
+  border-radius: 5px;
+  color: #07010c;
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.form__label {
+  font-size: 20px;
+  line-height: 15px;
+  color: rgb(31, 109, 211);
+}
