@@ -20,17 +20,19 @@ const fetchContacts = () => dispatch => {
     .catch(error => dispatch(fetchContactsError(error.message)));
 };
 
-const addContacts = (name, number) => dispatch => {
-  const contact = { name, number };
-  console.log(contact);
+const addContacts =
+  ({ name, number }) =>
+  dispatch => {
+    const contact = { name, number };
+    // console.log(contact);
 
-  dispatch(addContactsRequest());
+    dispatch(addContactsRequest());
 
-  axios
-    .post('/contacts', contact)
-    .then(({ data }) => dispatch(addContactsSuccess(data)))
-    .catch(error => dispatch(addContactsError(error.message)));
-};
+    axios
+      .post('/contacts', contact)
+      .then(({ data }) => dispatch(addContactsSuccess(data)))
+      .catch(error => dispatch(addContactsError(error.message)));
+  };
 
 const deleteContact = contactId => dispatch => {
   dispatch(deleteContactsRequest());

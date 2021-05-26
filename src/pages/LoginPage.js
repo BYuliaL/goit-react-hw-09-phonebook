@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
+import { useState, useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { authOperations } from '../redux/auth';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Button, Form } from 'react-bootstrap';
@@ -20,67 +20,74 @@ const styles = {
   },
 };
 
-class LoginPage extends Component {
-  state = {
-    email: '',
-    password: '',
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+
+    switch (name) {
+      case 'email':
+        setEmail(value);
+        break;
+
+      case 'password':
+        setPassword(value);
+        break;
+
+      default:
+        console.warn(`This type of name - ${name} doesn't work out`);
+    }
   };
+  const dispatch = useDispatch();
 
-  handleChange = ({ target: { name, value } }) => {
-    this.setState({ [name]: value });
-  };
+  const handleSubmit = useCallback(
+    e => {
+      e.preventDefault();
+      dispatch(authOperations.logIn({ email, password }));
 
-  handleSubmit = e => {
-    e.preventDefault();
+      setEmail('');
+      setPassword('');
+    },
+    [email, password, dispatch],
+  );
 
-    this.props.onLogin(this.state);
+  return (
+    <div>
+      <h1 style={styles.title}>Login page</h1>
 
-    this.setState({ name: '', email: '', password: '' });
-  };
+      <Form onSubmit={handleSubmit} style={styles.form} autoComplete="off">
+        <Form.Group controlId="formEmail">
+          <Form.Label style={styles.label}>Email </Form.Label>
+          <Form.Control
+            type="email"
+            placeholder="Example@mail.com"
+            name="email"
+            value={email}
+            onChange={handleChange}
+          ></Form.Control>
+        </Form.Group>
 
-  render() {
-    const { email, password } = this.state;
+        <Form.Group controlId="formPassword">
+          <Form.Label style={styles.label}>Password</Form.Label>
+          <Form.Control
+            type="password"
+            placeholder="Password"
+            name="password"
+            value={password}
+            onChange={handleChange}
+          ></Form.Control>
+        </Form.Group>
 
-    return (
-      <div>
-        <h1 style={styles.title}>Login page</h1>
-
-        <Form
-          onSubmit={this.handleSubmit}
-          style={styles.form}
-          autoComplete="off"
-        >
-          <Form.Group controlId="formEmail">
-            <Form.Label style={styles.label}>Email </Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Example@mail.com"
-              name="email"
-              value={email}
-              onChange={this.handleChange}
-            ></Form.Control>
-          </Form.Group>
-
-          <Form.Group controlId="formPassword">
-            <Form.Label style={styles.label}>Password</Form.Label>
-            <Form.Control
-              type="password"
-              placeholder="Password"
-              name="password"
-              value={password}
-              onChange={this.handleChange}
-            ></Form.Control>
-          </Form.Group>
-
-          <Button type="submit">Login</Button>
-        </Form>
-      </div>
-    );
-  }
+        <Button type="submit">Login</Button>
+      </Form>
+    </div>
+  );
 }
 
-const mapDispatchToProps = {
-  onLogin: authOperations.logIn,
-};
+// const mapDispatchToProps = {
+//   onLogin: authOperations.logIn,
+// };
 
-export default connect(null, mapDispatchToProps)(LoginPage);
+// export default connect(null, mapDispatchToProps)(LoginPage);
